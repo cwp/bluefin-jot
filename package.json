@@ -1,6 +1,6 @@
 {
   "name": "bluefin-jot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An simple interface for telemetry",
   "main": "dist/bluefin-jot.cjs.js",
   "module": "dist/bluefin-jot.esm.js",
