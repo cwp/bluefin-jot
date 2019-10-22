@@ -1,12 +1,12 @@
 export const level = {
-  none: 0,
-  debug: 1,
-  info: 2,
-  warning: 3,
-  error: 4,
-  critical: 5,
-  all: 6,
+  all: Number.MIN_SAFE_INTEGER,
+  debug: 10,
+  info: 20,
+  warning: 30,
+  error: 40,
+  critical: 50,
+  none: Number.MAX_SAFE_INTEGER,
 }
 
-export const levelName = []
+export const levelName = {}
 for (const name in level) levelName[level[name]] = name
