@@ -1,0 +1,24 @@
+{
+  "name": "bluefin-jot",
+  "version": "0.0.1",
+  "description": "An simple interface for telemetry",
+  "main": "dist/bluefin-jot.cjs.js",
+  "module": "dist/bluefin-jot.esm.js",
+  "author": "Colin Putney <colin@wiresong.com>",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "~4.1.1"
+  },
+  "devDependencies": {
+    "esm": "~3.2.25",
+    "mocha": "~6.2.2",
+    "must": "~0.13.4",
+    "must-sinon": "0.0.0",
+    "rollup": "~1.25.1",
+    "sinon": "~7.5.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "bin/check"
+  }
+}
