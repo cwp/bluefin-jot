@@ -6,6 +6,7 @@
   "module": "dist/bluefin-jot.esm.js",
   "author": "Colin Putney <colin@wiresong.com>",
   "license": "MIT",
+  "repository": "https://github.com/cwp/bluefin-jot.git",
   "dependencies": {
     "debug": "~4.1.1"
   },
