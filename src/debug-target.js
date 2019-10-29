@@ -12,7 +12,7 @@ export class DebugTarget {
   async finalize() {}
 
   log(level, message, context = {}) {
-    if (level > this.logLevel) return
+    if (level < this.logLevel) return
     const format = levelName[level] + ' %o'
     this.debug(format, message, context)
   }
