@@ -1,28 +1,49 @@
-import {level, levelName} from './level'
-
-import makeDebugFn from 'debug'
 import util from 'util'
 
-export class DebugTarget {
-  constructor(_level = level.all, name = 'jot') {
-    this.debug = makeDebugFn(name)
-    this.logLevel = _level
+import makeDebugFn from 'debug'
+
+import {levelName} from './level'
+import {NullTarget} from './null-target'
+
+const debugFunctions = new Map()
+
+export class DebugTarget extends NullTarget {
+  static write(name, format, ...args) {
+    name = name || 'jot'
+    let fn = debugFunctions.get(name)
+    if (fn === undefined) {
+      fn = makeDebugFn(name)
+      debugFunctions.set(name, fn)
+    }
+    fn(format, ...args)
   }
 
-  async finalize() {}
+  finish(span, context) {
+    span = span || {}
+    super.finish(span, context)
+    context.id = span.id
+    if (span.parentId) context.parentId = span.parentId
+    const format = `duration %dms %o`
+    this.constructor.write(span.name, format, span.duration, context)
+  }
 
-  log(level, message, context = {}) {
+  log(span, level, message, context = {}) {
+    span = span || {}
     if (level < this.logLevel) return
     const format = levelName[level] + ' %o'
-    this.debug(format, message, context)
+    this.constructor.write(span.name, format, message, context)
   }
 
-  metric(kind, name, value, context) {
+  metric(span, kind, name, value, context) {
+    span = span || {}
+    context.id = span.id
+    if (span.parentId) context.parentId = span.parentId
     const format = `${kind} %s %d %o`
-    this.debug(format, name, value, context)
+    this.constructor.write(span.name, format, name, value, context)
   }
 
-  error(error, context) {
+  error(span, error, context) {
+    span = span || {}
     const chunks = []
     let e = error
     while (e) {
@@ -31,6 +52,6 @@ export class DebugTarget {
     }
     if (context) chunks.unshift(util.format('%s %o', 'Error', context))
 
-    this.debug(chunks.join('\n'))
+    this.constructor.write(span.name, chunks.join('\n'))
   }
 }
